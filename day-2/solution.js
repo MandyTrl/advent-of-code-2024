@@ -1,7 +1,7 @@
 import { readInputFile } from "../utils.js"
 const inputData = readInputFile("input.txt")
 
-const test = (input) => {
+const findGoodReports = (input) => {
 	const regexLineBreak = /\r?\n/
 	const regexNoSpace = /\s+/
 
@@ -45,4 +45,4 @@ const test = (input) => {
 	return totalSafeReports
 }
 
-test(inputData)
+findGoodReports(inputData)
