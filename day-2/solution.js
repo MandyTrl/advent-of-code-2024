@@ -1,48 +1,70 @@
 import { readInputFile } from "../utils.js"
 const inputData = readInputFile("input.txt")
 
-const findGoodReports = (input) => {
-	const regexLineBreak = /\r?\n/
-	const regexNoSpace = /\s+/
+const regexLineBreak = /\r?\n/
+const regexNoSpace = /\s+/
 
+const findGoodReports = (input, dampenerProblem) => {
 	const lines = input.trim().split(regexLineBreak)
-	const reports = lines.map(
-		(line) => line.trim().split(regexNoSpace).map(Number) //convert string to number
+	const reports = lines.map((line) =>
+		line.trim().split(regexNoSpace).map(Number)
 	)
 
 	const safeLevels = [1, 2, 3]
 	let totalSafeReports = 0
 
 	reports.forEach((report) => {
-		let isSafeReport = true
-		let isIncreasing = null
-
-		for (let j = 0; j < report.length - 1; j++) {
-			const current = report[j]
-			const next = report[j + 1]
-			const difference = Math.abs(current - next) //Math.abs s'assure que la valeur reste positive
-			const currentDirection = next > current
-
-			if (!safeLevels.includes(difference)) {
-				isSafeReport = false
-				break
-			}
-
-			if (isIncreasing === null) {
-				isIncreasing = currentDirection
-			} else if (currentDirection !== isIncreasing) {
-				isSafeReport = false
-				break
-			}
+		if (isReportSafe(report)) {
+			totalSafeReports++
+			return
 		}
 
-		if (isSafeReport) {
-			totalSafeReports++
+		//si Problem Dampener, supprime un niveau
+		if (dampenerProblem) {
+			for (let i = 0; i < report.length; i++) {
+				//crée une copie du rapport sans le current level
+				const modifiedReport = [...report.slice(0, i), ...report.slice(i + 1)]
+
+				if (isReportSafe(modifiedReport)) {
+					totalSafeReports++
+					break
+				}
+			}
 		}
 	})
 
-	console.log(totalSafeReports)
+	const answerToLog = dampenerProblem
+		? "La réponse à la - 2ème - solution est :"
+		: "La réponse à la - 1ère - solution est :"
+
+	console.log(answerToLog, totalSafeReports)
 	return totalSafeReports
 }
 
-findGoodReports(inputData)
+//Fct pour vérifier si un rapport est sûr
+const isReportSafe = (report) => {
+	let isIncreasing = null
+
+	for (let j = 0; j < report.length - 1; j++) {
+		const current = report[j]
+		const next = report[j + 1]
+		const difference = Math.abs(next - current)
+		const safeLevels = [1, 2, 3]
+
+		if (!safeLevels.includes(difference)) {
+			return false
+		}
+
+		const currentDirection = next > current
+		if (isIncreasing === null) {
+			isIncreasing = currentDirection
+		} else if (currentDirection !== isIncreasing) {
+			return false
+		}
+	}
+
+	return true
+}
+
+findGoodReports(inputData, false)
+findGoodReports(inputData, true)
