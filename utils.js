@@ -1,5 +1,4 @@
 import path from "path"
-import { join } from "path"
 import { readFileSync } from "fs"
 import { fileURLToPath } from "url"
 

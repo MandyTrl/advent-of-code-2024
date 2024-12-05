@@ -53,12 +53,20 @@ h1 {
 	padding: 8px 0px;
 }
 
-.days-container {
+#days-container {
 	display: grid;
-	grid-template-columns: auto auto auto auto;
+	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+	gap: 20px;
 
 	p {
+		letter-spacing: 0.4em;
+		transition: all 150ms ease-in-out;
+	}
+
+	p:hover {
+		color: #ffb600;
 		letter-spacing: 0.6em;
+		cursor: pointer;
 	}
 }
 

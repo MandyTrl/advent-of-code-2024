@@ -24,6 +24,8 @@
 	</head>
 
 	<body>
+		<script type="module" src="./script.js"></script>
+
 		<h1>🎄 Advent of Code [2024]</h1>
 		<div class="main-container">
 			<div class="section-container">
@@ -34,25 +36,24 @@
 					<span style="text-decoration: line-through"
 						>on mange un chocolat</span
 					>
-					un nouveau puzzle est publié, et l'objectif est de résoudre ce
-					problème avec le langage de programmation de son choix. C’est une
-					occasion assez fun de se challenger, d’apprendre de nouvelles
-					techniques et de s’amuser en résolvant des problèmes de plus en plus
-					complexes. Que l'on soit débutant ou expérimenté, c’est un moyen idéal
-					pour améliorer ses compétences en coding tout en profitant de
-					l’ambiance de Noël. C’est aussi l'occasion de comparer ses solutions
-					avec celles des autres participants.
+					un nouveau puzzle est publié divisé en deux parties (libre à chacun de
+					n'en faire qu'une ou les deux.
+					<i
+						>- en sachant que la deuxième partie ne se débloque qu'une fois la
+						première résolue^^ -</i
+					>). L'objectif est de résoudre ce problème avec le langage de
+					programmation de son choix. C’est une occasion assez fun de se
+					challenger tout en résolvant des problèmes de plus en plus complexes.
+					Que l'on soit débutant ou expérimenté, c’est un moyen idéal pour
+					améliorer ses compétences, de comparer ses solutions avec celles des
+					autres en profitant de l’ambiance de Noël.
 				</p>
 			</div>
 
 			<div class="section-container">
 				<p class="highlight">Les algos</p>
 
-				<div class="days-container">
-					<p>{Day 1}</p>
-					<p>{Day 2}</p>
-					<p>{Day 3}</p>
-				</div>
+				<div id="days-container"></div>
 			</div>
 		</div>
 	</body>
