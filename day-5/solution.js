@@ -28,42 +28,68 @@ const findOrderPages = (input) => {
 
 	//crée un tableau de pages uniques
 	input.forEach((rule) => {
-		for (let i = 0; i < rule.length; i++) {
-			const current = rule[i]
-
-			if (!pagesOrder.includes(current)) {
-				pagesOrder.push(current)
+		rule.forEach((page) => {
+			if (!pagesOrder.includes(page)) {
+				pagesOrder.push(page)
 			}
-		}
+		})
 	})
 
 	//ré-organise les pages dans le bon ordre
-	input.forEach((rule) => {
-		for (let i = 0; i < 1; i++) {
-			const current = rule[i]
-			const next = rule[i + 1]
+	let updated = true
 
-			const currentPage = pagesOrder.findIndex((el) => el === current)
-			const nextPage = pagesOrder.findIndex((el) => el === next)
+	while (updated) {
+		updated = false
+		input.forEach((rule) => {
+			const current = rule[0]
+			const next = rule[1]
+			const currentPageIndex = pagesOrder.indexOf(current)
+			const nextPageIndex = pagesOrder.indexOf(next)
 
-			if (currentPage > nextPage) {
-				const fromIndex = currentPage
-				const toIndex = nextPage - 1
-
-				const [element] = pagesOrder.splice(fromIndex, 1) //delete la page, [element] = valeur supprimée
-				pagesOrder.splice(toIndex, 0, element) //replace la page
+			if (currentPageIndex > nextPageIndex) {
+				pagesOrder.splice(currentPageIndex, 1)
+				pagesOrder.splice(nextPageIndex, 0, current)
+				updated = true
 			}
-		}
-	})
+		})
+	}
 
 	return pagesOrder
 }
 
 const test = (input) => {
 	const { rules, manuals } = formatInput(input)
-	const pagesOrder = findOrderPages(rules)
+	console.log(rules.length, manuals.length)
 
-	console.log(pagesOrder)
+	const pagesOrder = findOrderPages(rules)
+	let manualsToUpdate = []
+	let middlePageSum = 0
+
+	manuals.forEach((manual) => {
+		let orderIsOk = true
+
+		for (let i = 0; i < manual.length - 1; i++) {
+			const current = manual[i]
+			const next = manual[i + 1]
+
+			let currentPage = pagesOrder.indexOf(current)
+			let nextPage = pagesOrder.indexOf(next)
+
+			if (currentPage > nextPage) {
+				orderIsOk = false
+				break
+			}
+		}
+
+		if (orderIsOk) {
+			manualsToUpdate.push(manual)
+			const middlePageIndex = Math.floor(manual.length / 2)
+			middlePageSum += manual[middlePageIndex]
+		}
+	})
+
+	console.log("Somme des pages du milieu :", middlePageSum)
+	return middlePageSum
 }
 
 test(inputData)

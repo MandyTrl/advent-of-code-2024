@@ -1,7 +1,7 @@
 import { readInputFile } from "../utils.js"
 const inputData = readInputFile("input.txt")
 
-const calculateTotalDistance = (input) => {
+const calculateTotalDistance = (input, similarityScore) => {
 	const lines = input.trim().split("\n")
 	const leftColumn = []
 	const rightColumn = []
@@ -16,12 +16,29 @@ const calculateTotalDistance = (input) => {
 	const sortedLeftList = leftColumn.sort((a, b) => a - b)
 	const sortedRightList = rightColumn.sort((a, b) => a - b)
 
-	for (let i = 0; i < sortedLeftList.length; i++) {
-		total += Math.abs(sortedLeftList[i] - sortedRightList[i]) //Math.abs s'assure que la valeur reste positive
+	if (!similarityScore) {
+		for (let i = 0; i < sortedLeftList.length; i++) {
+			total += Math.abs(sortedLeftList[i] - sortedRightList[i]) //Math.abs s'assure que la valeur reste positive
+		}
+	} else {
+		for (let i = 0; i < sortedLeftList.length; i++) {
+			const leftCurrent = sortedLeftList[i]
+
+			const occurences = sortedRightList.filter(
+				(rightNumber) => rightNumber === leftCurrent
+			).length
+
+			total += Math.abs(sortedLeftList[i] * occurences)
+		}
 	}
 
-	console.log(total)
+	const answerToLog = similarityScore
+		? "La réponse à la - 2ème - solution est :"
+		: "La réponse à la - 1ère - solution est :"
+
+	console.log(answerToLog, total)
 	return total
 }
 
 calculateTotalDistance(inputData)
+calculateTotalDistance(inputData, true)
