@@ -3,60 +3,57 @@ const inputData = readInputFile("input.txt")
 
 const regexMul = /mul\((-?\d+),(-?\d+)\)/g
 const regexNumber = /(\d+)/g
-// const regexFirstMul = /mul\((-?\d+),(-?\d+)\)/
-// const regexDoMulAfterDo = /do\(\)[^]*?mul\((-?\d+),(-?\d+)\)/g
-// const regexExecuteMul = /do\(\)/g
-// const regexDontExecuteMul = /don't\(\)/g
+const regexExecuteMul = /mul\((\d+),(\d+)\)|do\(\)|don't\(\)/g
+const doMul = "do()"
+const dontMul = "don't()"
 
-const fixCorruptedCode = (input, regex) => {
+const calculMul = (input) => {
+	const matchNum = input.matchAll(regexNumber)
+	const matchDatas = Array.from(matchNum).map((number) => parseInt(number[0]))
+
+	const firstNumber = matchDatas[0]
+	const secondNumber = matchDatas[1]
+
+	return { firstNumber, secondNumber }
+}
+
+const fixCorruptedCode = (input, executeMul) => {
 	let total = 0
+	let isExecuting = true
 
-	const match = input.matchAll(regex)
+	const match = executeMul
+		? input.matchAll(regexExecuteMul)
+		: input.matchAll(regexMul)
+
 	const instructions = Array.from(match).map((instruction) => instruction[0])
 
 	instructions.forEach((instruction) => {
-		const matchNum = instruction.matchAll(regexNumber)
-		const matchDatas = Array.from(matchNum).map((number) => parseInt(number[0]))
+		if (executeMul) {
+			if (instruction === dontMul && isExecuting) {
+				isExecuting = false
+			}
 
-		total += matchDatas[0] * matchDatas[1]
+			if (instruction === doMul && !isExecuting) {
+				isExecuting = true
+			}
+
+			if (isExecuting && instruction.startsWith("mul")) {
+				const { firstNumber, secondNumber } = calculMul(instruction)
+				total += firstNumber * secondNumber
+			}
+		} else {
+			const { firstNumber, secondNumber } = calculMul(instruction)
+			total += firstNumber * secondNumber
+		}
 	})
 
-	console.log(total)
+	const answerToLog = executeMul
+		? "La réponse à la - 2ème - solution est :"
+		: "La réponse à la - 1ère - solution est :"
+
+	console.log(answerToLog, total)
 	return total
 }
 
-// const executeMul = (input) => {
-// 	const matchDoMul = input.matchAll(regexDoMulAfterDo)
-// 	const goodInstructions = Array.from(matchDoMul).map(
-// 		(instruction) => instruction[0]
-// 	)
-
-// 	const matchFirstMul = input.match(regexFirstMul)
-// 	const firstMul = Array.from(matchFirstMul).map((mul) => mul[0])
-
-// 	let total = parseInt(firstMul[1]) * parseInt(firstMul[2])
-
-// 	goodInstructions.forEach((instruction) => {
-// 		const doMul = instruction.matchAll(regexMul)
-// 		const muls = Array.from(doMul).map((mul) => mul[0])
-
-// 		muls.forEach((instruction) => {
-// 			const matchNum = instruction.matchAll(regexNumber)
-// 			const matchDatas = Array.from(matchNum).map((number) =>
-// 				parseInt(number[0])
-// 			)
-
-// 			// console.log(matchDatas)
-
-// 			const firstNumber = matchDatas[0]
-// 			const secondNumber = matchDatas[1]
-// 			total += firstNumber * secondNumber
-// 		})
-// 	})
-
-// 	console.log(total)
-// 	return total
-// }
-
-fixCorruptedCode(inputData, regexMul)
-// executeMul(inputData)
+fixCorruptedCode(inputData)
+fixCorruptedCode(inputData, true)
