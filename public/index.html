@@ -9,7 +9,7 @@
 		<link
 			href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&family=Krub:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=SUSE:wght@100..800&display=swap"
 			rel="stylesheet" />
-		<!-- <link rel="shortcut icon" href="./images/icons/icon-booki.png" /> -->
+		<link rel="shortcut icon" href="/images/dark.png" />
 
 		<link
 			rel="stylesheet"
@@ -17,16 +17,23 @@
 			integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer" />
+
 		<link rel="stylesheet" href="./style.css" />
+
+		<!-- Highlight.js Theme: Base16 Icy Dark -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/icy-dark.min.css" />
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
 		<script
 			src="https://kit.fontawesome.com/4ca93e8f1a.js"
 			crossorigin="anonymous"></script>
 	</head>
 
 	<body>
-		<script type="module" src="./script.js"></script>
+		<h1>Advent of Code [2024]</h1>
 
-		<h1>🎄 Advent of Code [2024]</h1>
 		<div class="main-container">
 			<div class="section-container">
 				<p class="question">Qu'est-ce que l'Advent of code ?</p>
@@ -50,11 +57,70 @@
 				</p>
 			</div>
 
-			<div class="section-container">
-				<p class="highlight">Les algos</p>
+			<div id="days-container"></div>
 
-				<div id="days-container"></div>
+			<div class="section-container">
+				<p class="js">solution.js</p>
+
+				<div id="ide-container">
+					<pre>					
+						<code class="language-javascript">
+		import { readInputFile } from "../utils.js" 
+		const inputData = readInputFile("input.txt") 
+
+
+		const calculateTotalDistance = (input, similarityScore) => { 
+		const lines = input.trim().split("\n") 
+
+		const leftColumn = [] 
+		const rightColumn = [] 
+		let total = 0
+
+		lines.forEach((line) => { 
+			const [left, right] = line.trim().split(/\s+/) 
+			leftColumn.push(parseInt(left, 10))
+			rightColumn.push(parseInt(right, 10)) 
+		}) 
+
+		const sortedLeftList = leftColumn.sort((a, b) => a - b) 
+		const sortedRightList = rightColumn.sort((a, b) => a - b) 
+
+		if (!similarityScore) { 
+			for (let i = 0; i < sortedLeftList.length; i++) { 
+				total += Math.abs(sortedLeftList[i] - sortedRightList[i]) 
+			} 
+		} else { 
+			for (let i = 0; i < sortedLeftList.length; i++) { 
+				const leftCurrent = sortedLeftList[i]
+				const occurences = sortedRightList.filter((rightNumber) =>
+					rightNumber === leftCurrent 
+				).length 
+				total += Math.abs(sortedLeftList[i] * occurences) 
+			} 
+		} 
+		const answerToLog = similarityScore ? 
+		"La réponse à la - 2ème - solution est :" : 
+		"La réponse à la - 1ère - solution est :" 
+
+
+		console.log(answerToLog, total)
+		return total 
+		} 
+
+		calculateTotalDistance(inputData)
+		calculateTotalDistance(inputData, true)
+					</code>
+				</pre>
+				</div>
 			</div>
 		</div>
+
+		<script>
+			//initialise Highlight.js sur tous les blocs <code>
+			document.addEventListener("DOMContentLoaded", () => {
+				hljs.highlightAll()
+			})
+		</script>
+		<script type="module" src="./script.js"></script>
 	</body>
 </html>

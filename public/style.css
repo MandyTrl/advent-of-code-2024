@@ -10,6 +10,7 @@
 	--main-color: #1b263b;
 	--primary-color: #415a77;
 	--secondary-color: #778da9;
+	--accent-color: #1dd7e8;
 	--tertiary-color: #e0e1dd;
 }
 
@@ -23,12 +24,14 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	/* justify-content: center; */
 }
 
 h1 {
-	font-size: 1.8em;
-	margin-bottom: 1.6em;
+	font-size: 1.9em;
+	margin-top: 1.6em;
+	align-self: flex-end;
+	justify-self: end;
+	color: var(--accent-color);
 }
 
 /* .main-container {
@@ -36,17 +39,27 @@ h1 {
 
 .section-container {
 	background-color: var(--main-color);
-	margin-top: 0.5em;
 	padding: 8px 15px;
-	/* border: #e0e1dd 0.1rem solid; */
 	box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
 		rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+	position: relative;
+}
+
+code {
+	width: 50%;
+	border-radius: 25px;
+	letter-spacing: 0.1em;
+	font-size: 1.1em;
+}
+
+pre {
+	padding-left: 1.5em;
 }
 
 .question {
 	font-size: 1.1em;
 	font-weight: 500;
-	color: var(--secondary-color);
+	color: var(--accent-color);
 }
 
 .answer {
@@ -57,6 +70,10 @@ h1 {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 	gap: 20px;
+	padding: 2.1em 1.4em;
+	margin: 1.9em 0em;
+	border-top: 1px solid var(--accent-color);
+	border-bottom: 1px solid var(--accent-color);
 
 	p {
 		letter-spacing: 0.4em;
@@ -64,7 +81,7 @@ h1 {
 	}
 
 	p:hover {
-		color: #ffb600;
+		color: var(--accent-color);
 		letter-spacing: 0.6em;
 		cursor: pointer;
 	}
@@ -74,4 +91,13 @@ h1 {
 	font-size: 0.98em;
 	font-weight: 600;
 	text-transform: uppercase;
+}
+
+.js {
+	color: var(--accent-color);
+	font-weight: 600;
+	font-size: 1.3em;
+	position: absolute;
+	left: 43%;
+	top: 6%;
 }
