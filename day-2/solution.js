@@ -10,7 +10,6 @@ const findGoodReports = (input, dampenerProblem) => {
 		line.trim().split(regexNoSpace).map(Number)
 	)
 
-	const safeLevels = [1, 2, 3]
 	let totalSafeReports = 0
 
 	reports.forEach((report) => {
